@@ -1,8 +1,10 @@
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
+
 class appstate(StatesGroup):
     type_block = State()
     type_app = State()
+    app_theme = State()
     phone_uz = State()
     phone_ru = State()
     fullname_uz = State()
@@ -15,5 +17,3 @@ class appstate(StatesGroup):
     pol_ru = State()
     app_tex_uz = State()
     app_tex_ru = State()
-
-
