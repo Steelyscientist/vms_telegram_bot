@@ -13,6 +13,7 @@ async def on_startup(dispatcher):
     # Ma'lumotlar bazasini yaratamiz:
     try:
         db.create_table_users()
+        db.create_table_appeal()
     except Exception as err:
         print(err)
 
@@ -20,5 +21,5 @@ async def on_startup(dispatcher):
     await on_startup_notify(dispatcher)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     executor.start_polling(dp, on_startup=on_startup)

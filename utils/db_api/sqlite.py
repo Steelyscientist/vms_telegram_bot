@@ -1,4 +1,6 @@
+from datetime import date
 import sqlite3
+from time import time
 
 
 class Database:
@@ -9,7 +11,14 @@ class Database:
     def connection(self):
         return sqlite3.connect(self.path_to_db)
 
-    def execute(self, sql: str, parameters: tuple = None, fetchone=False, fetchall=False, commit=False):
+    def execute(
+        self,
+        sql: str,
+        parameters: tuple = None,
+        fetchone=False,
+        fetchall=False,
+        commit=False,
+    ):
         if not parameters:
             parameters = ()
         connection = self.connection
@@ -29,24 +38,42 @@ class Database:
 
     def create_table_users(self):
         sql = """
-        CREATE TABLE Users (
-            id int NOT NULL,
-            Name varchar(255) NOT NULL,
-            email varchar(255),
-            language varchar(3),
-            PRIMARY KEY (id)
+            CREATE TABLE Users (
+                id int NOT NULL,
+                Name varchar(255) NOT NULL,
+                email varchar(255),
+                phone varchar(255),
+                language varchar(3),
+                is_operator BOOLEAN DEFAULT FALSE,
+                
+                PRIMARY KEY (id)
             );
-"""
+        """
+        self.execute(sql, commit=True)
+
+    def create_table_appeal(self):
+        sql = """
+            CREATE TABLE Appeal (
+                id int NOT NULL,
+                user_id int NOT NULL,
+                text varchar(255),
+                theme varchar(255),
+                type varchar(255),
+                status varchar(255),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                
+                PRIMARY KEY (id),
+                FOREIGN KEY (user_id) REFERENCES Users(id)
+            );
+        """
         self.execute(sql, commit=True)
 
     @staticmethod
     def format_args(sql, parameters: dict):
-        sql += " AND ".join([
-            f"{item} = ?" for item in parameters
-        ])
+        sql += " AND ".join([f"{item} = ?" for item in parameters])
         return sql, tuple(parameters.values())
 
-    def add_user(self, id: int, name: str, email: str = None, language: str = 'uz'):
+    def add_user(self, id: int, name: str, email: str = None, language: str = "uz"):
         # SQL_EXAMPLE = "INSERT INTO Users(id, Name, email) VALUES(1, 'John', 'John@gmail.com')"
 
         sql = """
@@ -73,19 +100,58 @@ class Database:
     def update_user_email(self, email, id):
         # SQL_EXAMPLE = "UPDATE Users SET email=mail@gmail.com WHERE id=12345"
 
-        sql = f"""
+        sql = """
         UPDATE Users SET email=? WHERE id=?
         """
         return self.execute(sql, parameters=(email, id), commit=True)
 
+    def update_user_phone(self, phone, id):
+        sql = """
+        UPDATE Users SET phone=? WHERE id=?
+        """
+        return self.execute(sql, parameters=(phone, id), commit=True)
+
     def delete_users(self):
         self.execute("DELETE FROM Users WHERE TRUE", commit=True)
 
+    def get_appeals(self):
+        sql = """
+        SELECT * FROM Appeal
+        """
+        return self.execute(sql, fetchall=True)
+
+    def create_appeal(self, user_id, text, type, status):
+        sql = """
+        INSERT INTO Appeal(id, user_id, text, type, status) VALUES(?, ?, ?, ?, ?)
+        """
+        id = int(time())
+        self.execute(sql, parameters=(id, user_id, text, type, status), commit=True)
+
+    def get_appeal(self, id):
+        sql = """
+        SELECT * FROM Appeal WHERE id=?
+        """
+        return self.execute(sql, parameters=(id,), fetchone=True)
+
+    def get_appeals_by_user_id(self, user_id):
+        sql = """
+        SELECT * FROM Appeal WHERE user_id=?
+        """
+        return self.execute(sql, parameters=(user_id,), fetchall=True)
+
+    def update_appeal_status(self, status, id):
+        sql = """
+        UPDATE Appeal SET status=? WHERE id=?
+        """
+        return self.execute(sql, parameters=(status, id), commit=True)
+
 
 def logger(statement):
-    print(f"""
+    print(
+        f"""
 _____________________________________________________        
 Executing: 
 {statement}
 _____________________________________________________
-""")
+"""
+    )
