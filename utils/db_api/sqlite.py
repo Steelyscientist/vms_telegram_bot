@@ -126,12 +126,14 @@ class Database:
         """
         return self.execute(sql, fetchall=True)
 
-    def create_appeal(self, user_id, text, type, status):
+    def create_appeal(self, user_id, text, type, status, theme=None):
         sql = """
-        INSERT INTO Appeal(id, user_id, text, type, status) VALUES(?, ?, ?, ?, ?)
+        INSERT INTO Appeal(id, user_id, text, type, status, theme) VALUES(?, ?, ?, ?, ?, ?)
         """
         id = int(time())
-        self.execute(sql, parameters=(id, user_id, text, type, status), commit=True)
+        self.execute(
+            sql, parameters=(id, user_id, text, type, status, theme), commit=True
+        )
 
     def get_appeal(self, id):
         sql = """
@@ -144,6 +146,12 @@ class Database:
         SELECT * FROM Appeal WHERE user_id=?
         """
         return self.execute(sql, parameters=(user_id,), fetchall=True)
+
+    def get_appeals_by_type(self, type):
+        sql = """
+        SELECT * FROM Appeal WHERE type=?
+        """
+        return self.execute(sql, parameters=(type,), fetchall=True)
 
     def update_appeal_status(self, status, id):
         sql = """

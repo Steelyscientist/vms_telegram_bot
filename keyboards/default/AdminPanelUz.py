@@ -6,8 +6,11 @@ admin_uz = ReplyKeyboardMarkup(
             KeyboardButton(text="Javob berish / Отвечать"),
         ],
         [
+            KeyboardButton(text="Statistika / Статистика"),
+        ],
+        [
             KeyboardButton(text="Ortga / Назад"),
-        ]
+        ],
     ],
-    resize_keyboard=True
+    resize_keyboard=True,
 )

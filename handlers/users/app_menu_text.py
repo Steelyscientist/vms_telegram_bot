@@ -79,7 +79,11 @@ async def bot_start(message: types.Message, state: FSMContext):
 
             if app_type == "Anonim murojaat":
                 db.create_appeal(
-                    user_id=user_id, text=Uztext, type="Anonymous", status=1
+                    user_id=user_id,
+                    text=Uztext,
+                    type="Anonymous",
+                    status=1,
+                    theme=modul,
                 )
                 msg5 = f"<b>User ID:</b> {user_id}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
@@ -89,7 +93,9 @@ async def bot_start(message: types.Message, state: FSMContext):
                 await bot.send_message(-1002176563327, text=msg5)
                 await state.finish()
             elif app_type == "Ochiq murojaat":
-                db.create_appeal(user_id=user_id, text=Uztext, type="Open", status=1)
+                db.create_appeal(
+                    user_id=user_id, text=Uztext, type="Open", status=1, theme=modul
+                )
                 msg6 = f"<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
@@ -140,7 +146,11 @@ async def bot_start(message: types.Message, state: FSMContext):
 
             if app_type == "Анонимное обращение":
                 db.create_appeal(
-                    user_id=user_id, text=Rutext, type="Anonymous", status=1
+                    user_id=user_id,
+                    text=Rutext,
+                    type="Anonymous",
+                    status=1,
+                    theme=modul,
                 )
                 msg5 = f"<b>User ID:</b> {user_id}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
@@ -150,7 +160,9 @@ async def bot_start(message: types.Message, state: FSMContext):
                 await bot.send_message(-1002176563327, text=msg5)
                 await state.finish()
             elif app_type == "Открытое обращение":
-                db.create_appeal(user_id=user_id, text=Rutext, type="Open", status=1)
+                db.create_appeal(
+                    user_id=user_id, text=Rutext, type="Open", status=1, theme=modul
+                )
                 msg6 = f"<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
