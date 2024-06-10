@@ -159,10 +159,11 @@ async def bot_start(message: types.Message, state: FSMContext):
 
     await state.update_data(
         {
-            "Ism": name,
-            "Nick name": user_info,
-            "UserID": user_id,
-            "Modul": modul,
+            # "Ism": name,
+            # "Nick name": user_info,
+            # "UserID": user_id,
+            # "Modul": modul,
+            "Theme": message.text,
         }
     )
     if user[5] == "uz":

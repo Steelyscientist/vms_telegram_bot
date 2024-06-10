@@ -74,6 +74,7 @@ async def bot_start(message: types.Message, state: FSMContext):
             user_id = data.get("UserID")
             phone = data.get("Nomer")
             modul = data.get("Modul")
+            theme = data.get("Theme")
             app_type = data.get("Turkum")
             Uztext = data.get("Matin")
 
@@ -85,7 +86,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                     status=1,
                     theme=modul,
                 )
-                msg5 = f"<b>User ID:</b> {user_id}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Uztext}"
+                msg5 = f"<b>User ID:</b> {user_id}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
                     reply_markup=start,
@@ -94,9 +95,9 @@ async def bot_start(message: types.Message, state: FSMContext):
                 await state.finish()
             elif app_type == "Ochiq murojaat":
                 db.create_appeal(
-                    user_id=user_id, text=Uztext, type="Open", status=1, theme=modul
+                    user_id=user_id, text=Uztext, type="Open", status=1, theme=theme
                 )
-                msg6 = f"<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Uztext}"
+                msg6 = f"<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
                     reply_markup=start,
@@ -141,6 +142,7 @@ async def bot_start(message: types.Message, state: FSMContext):
             user_id = data.get("UserID")
             phone = data.get("Nomer")
             modul = data.get("Modul")
+            theme = data.get("Theme")
             app_type = data.get("Turkum")
             Rutext = data.get("Matin")
 
@@ -152,7 +154,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                     status=1,
                     theme=modul,
                 )
-                msg5 = f"<b>User ID:</b> {user_id}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Rutext}"
+                msg5 = f"<b>User ID:</b> {user_id}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
                     reply_markup=start,
@@ -161,9 +163,9 @@ async def bot_start(message: types.Message, state: FSMContext):
                 await state.finish()
             elif app_type == "Открытое обращение":
                 db.create_appeal(
-                    user_id=user_id, text=Rutext, type="Open", status=1, theme=modul
+                    user_id=user_id, text=Rutext, type="Open", status=1, theme=theme
                 )
-                msg6 = f"<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Rutext}"
+                msg6 = f"<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
                     reply_markup=start,
