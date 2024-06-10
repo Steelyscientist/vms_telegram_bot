@@ -5,6 +5,7 @@ class appstate(StatesGroup):
     type_block = State()
     type_app = State()
     app_theme = State()
+    app_interest = State()
     phone_uz = State()
     phone_ru = State()
     fullname_uz = State()

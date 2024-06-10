@@ -111,6 +111,12 @@ class Database:
         """
         return self.execute(sql, parameters=(phone, id), commit=True)
 
+    def update_user_language(self, language, id):
+        sql = """
+        UPDATE Users SET language=? WHERE id=?
+        """
+        return self.execute(sql, parameters=(language, id), commit=True)
+
     def delete_users(self):
         self.execute("DELETE FROM Users WHERE TRUE", commit=True)
 
