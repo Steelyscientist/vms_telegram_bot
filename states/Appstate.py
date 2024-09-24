@@ -18,3 +18,4 @@ class appstate(StatesGroup):
     pol_ru = State()
     app_tex_uz = State()
     app_tex_ru = State()
+    app_end = State()

@@ -1,5 +1,6 @@
 from aiogram import types
 from loader import dp, bot
+from data.config import GROUP_ID
 from aiogram.dispatcher import FSMContext
 from states.Appstate import appstate
 from keyboards.default.SelectLanguage import start
@@ -62,7 +63,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
                 reply_markup=start,
             )
-            await bot.send_message(-1002176563327, text=msg3)
+            await bot.send_message(GROUP_ID, text=msg3)
             await state.finish()
         else:
             await message.reply(
@@ -96,7 +97,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
                 reply_markup=start,
             )
-            await bot.send_message(-1002176563327, text=msg4)
+            await bot.send_message(GROUP_ID, text=msg4)
             await state.finish()
         else:
             await message.reply(

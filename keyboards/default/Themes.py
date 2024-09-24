@@ -43,7 +43,7 @@ app_theme_uz = ReplyKeyboardMarkup(
 app_intrest_ru = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Хочу больше информации по теме"),
+            KeyboardButton(text="Мне нужна консультация"),
         ],
         [
             KeyboardButton(text="Мне срочно нужна помощь"),
@@ -55,7 +55,7 @@ app_intrest_ru = ReplyKeyboardMarkup(
 app_intrest_uz = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Mavzuga ko'proq ma'lumot kerak"),
+            KeyboardButton(text="Menga maslahat kerak"),
         ],
         [
             KeyboardButton(text="Menga tez yordam kerak"),

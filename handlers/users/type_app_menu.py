@@ -1,5 +1,6 @@
 from aiogram import types
-from loader import dp, db
+from loader import dp, db, bot
+from data.config import GROUP_ID
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from keyboards.default.SelectLanguage import start
@@ -12,8 +13,8 @@ from keyboards.default.Themes import (
     app_intrest_ru,
     app_intrest_uz,
 )
-from keyboards.default.ApplicationPageRu import application_page_ru
-from keyboards.default.ApplicationPageUz import application_page_uz
+from keyboards.default.ApplicationPageRu import application_page_ru, phone_and_location_ru
+from keyboards.default.ApplicationPageUz import application_page_uz, phone_and_location_uz
 from aiogram.dispatcher.filters.builtin import CommandStart
 from keyboards.default.PhoneUZ import phone_uz
 from keyboards.default.PhoneRU import phone_ru
@@ -37,7 +38,7 @@ async def bot_start(message: types.Message, state: FSMContext):
     await state.finish()
 
 
-@dp.message_handler(text="Psixolog maslaxatiga yozilish", state=appstate.type_block)
+@dp.message_handler(text="Gaplashishni istayman", state=appstate.type_block)
 async def bot_start(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
     name = message.from_user.full_name
@@ -64,7 +65,7 @@ async def bot_start(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(
-    text="Запишитесь на консультацию Психолога", state=appstate.type_block
+    text="Хочу поговорить", state=appstate.type_block
 )
 async def bot_start(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
@@ -181,8 +182,8 @@ async def bot_start(message: types.Message, state: FSMContext):
     text = message.text
 
     if (
-        text == "Mavzuga ko'proq ma'lumot kerak"
-        or text == "Хочу больше информации по теме"
+        text == "Menga maslahat kerak"
+        or text == "Мне нужна консультация"
     ):
         if user[5] == "uz":
             message_text = """
@@ -209,13 +210,55 @@ Seni nima bezovta qilmoqda?
             await message.answer(message_text, reply_markup=application_page_ru)
             await appstate.type_app.set()
     else:
+        # ask user for phone or location
         if user[5] == "uz":
             await message.answer(
-                "Murojaat turini tanlang", reply_markup=application_page_uz
+                "Iltimos raqamingizni yoki lokatsiyangizni yuboring.", reply_markup=phone_and_location_uz
             )
-            await appstate.type_app.set()
+            await appstate.app_end.set()
         else:
             await message.answer(
-                "Выберите тип обращения.", reply_markup=application_page_ru
+                "Пожалуйста, отправьте свой номер телефона или местоположение.", reply_markup=phone_and_location_ru
             )
-            await appstate.type_app.set()
+            await appstate.app_end.set()
+
+
+@dp.message_handler(content_types=types.ContentType.ANY, state=appstate.app_end)
+async def bot_start(message: types.Message, state: FSMContext):
+    
+    user_id = message.from_user.id
+    user = db.select_user(id=user_id)
+    
+    data = await state.get_data()
+    # user_id = data.get("UserID")
+    modul = data.get("Modul")
+    theme = data.get("Theme")
+    
+    msg5 = f"<b>User ID:</b> {user_id}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> Shoshilinch\n<b>Mavzu: </b>{theme}"
+    
+    if message.content_type == "contact":
+        phone = message.contact.phone_number
+        msg5 = f"<b>User ID:</b> {user_id}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> Shoshilinch\n<b>Mavzu: </b>{theme}\n<b>Telefon:</b> {phone}"
+    db.create_appeal(
+        user_id=user_id,
+        text=theme,
+        type="Anonymous",
+        status=1,
+        theme=theme,
+    )
+    
+    if user[5] == "uz":
+        await message.answer(
+            "Murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
+            reply_markup=start,
+        )
+    else:
+        await message.answer(
+            "Ваш запрос принят. Ожидайте ответа специалиста в ближайшее время. При необходимости будет отправлена ссылка для консультации через Zoom.",
+            reply_markup=start,
+        )
+    msg = await bot.send_message(GROUP_ID, text=msg5)
+    if message.content_type == "location":
+        await bot.send_location(GROUP_ID, message.location.latitude, message.location.longitude, reply_to_message_id=msg.message_id)
+    await state.finish()
+

@@ -1,5 +1,6 @@
 from aiogram import types
 from loader import dp, bot, db
+from data.config import GROUP_ID
 from aiogram.dispatcher import FSMContext
 from states.Appstate import appstate
 from keyboards.default.SelectLanguage import start
@@ -91,7 +92,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
                     reply_markup=start,
                 )
-                await bot.send_message(-1002176563327, text=msg5)
+                await bot.send_message(GROUP_ID, text=msg5)
                 await state.finish()
             elif app_type == "Ochiq murojaat":
                 db.create_appeal(
@@ -102,7 +103,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
                     reply_markup=start,
                 )
-                await bot.send_message(-1002176563327, text=msg6)
+                await bot.send_message(GROUP_ID, text=msg6)
                 await state.finish()
             else:
                 msg3 = f"<b>Ism:</b> {name}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat:</b>\n{Uztext}"
@@ -110,7 +111,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
                     reply_markup=start,
                 )
-                await bot.send_message(-1002176563327, text=msg3)
+                await bot.send_message(GROUP_ID, text=msg3)
                 await state.finish()
 
         else:
@@ -159,7 +160,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
                     reply_markup=start,
                 )
-                await bot.send_message(-1002176563327, text=msg5)
+                await bot.send_message(GROUP_ID, text=msg5)
                 await state.finish()
             elif app_type == "Открытое обращение":
                 db.create_appeal(
@@ -170,7 +171,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
                     reply_markup=start,
                 )
-                await bot.send_message(-1002176563327, text=msg6)
+                await bot.send_message(GROUP_ID, text=msg6)
                 await state.finish()
             else:
                 msg4 = f"<b>Ism:</b> {name}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat:</b>\n{Rutext}"
@@ -178,7 +179,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
                     reply_markup=start,
                 )
-                await bot.send_message(-1002176563327, text=msg4)
+                await bot.send_message(GROUP_ID, text=msg4)
                 await state.finish()
         else:
             await message.reply(

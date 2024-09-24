@@ -12,3 +12,15 @@ application_page_ru = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+
+phone_and_location_ru = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Отправить номер телефона", request_contact=True),
+        ],
+        [
+            KeyboardButton(text="Отправить местоположение", request_location=True),
+        ],
+    ],
+    resize_keyboard=True
+)

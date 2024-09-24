@@ -3,7 +3,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 type_app_uz = ReplyKeyboardMarkup(
     keyboard=[
         [
-        KeyboardButton(text="Psixolog maslaxatiga yozilish"),
+        KeyboardButton(text="Gaplashishni istayman"),
         KeyboardButton(text="Murojaat qoldirish")
         ],
         [
