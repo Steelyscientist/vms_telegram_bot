@@ -6,3 +6,4 @@ class adminstate(StatesGroup):
     userid = State()
     confirm = State()
     statistics = State()
+    reply = State()

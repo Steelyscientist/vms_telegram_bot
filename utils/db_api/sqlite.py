@@ -12,12 +12,12 @@ class Database:
         return sqlite3.connect(self.path_to_db)
 
     def execute(
-        self,
-        sql: str,
-        parameters: tuple = None,
-        fetchone=False,
-        fetchall=False,
-        commit=False,
+            self,
+            sql: str,
+            parameters: tuple = None,
+            fetchone=False,
+            fetchall=False,
+            commit=False,
     ):
         if not parameters:
             parameters = ()
@@ -64,6 +64,25 @@ class Database:
                 
                 PRIMARY KEY (id),
                 FOREIGN KEY (user_id) REFERENCES Users(id)
+            );
+        """
+        self.execute(sql, commit=True)
+
+    def create_table_replies(self):
+        sql = """
+            create table Replies (
+                id int NOT NULL,
+                appeal_id int NOT NULL,
+                user_id int NOT NULL,
+                reply_id int NULL,
+                text varchar(255),
+                message_id int NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                
+                PRIMARY KEY (id),
+                FOREIGN KEY (appeal_id) REFERENCES Appeal(id)
+                FOREIGN KEY (user_id) REFERENCES Users(id)
+                FOREIGN KEY (reply_id) REFERENCES Replies(id)
             );
         """
         self.execute(sql, commit=True)
@@ -126,7 +145,7 @@ class Database:
         """
         return self.execute(sql, fetchall=True)
 
-    def create_appeal(self, user_id, text, type, status, theme=None):
+    def create_appeal(self, user_id, text, type, status, theme=None) -> int:
         sql = """
         INSERT INTO Appeal(id, user_id, text, type, status, theme) VALUES(?, ?, ?, ?, ?, ?)
         """
@@ -134,6 +153,7 @@ class Database:
         self.execute(
             sql, parameters=(id, user_id, text, type, status, theme), commit=True
         )
+        return id
 
     def get_appeal(self, id):
         sql = """
@@ -158,6 +178,40 @@ class Database:
         UPDATE Appeal SET status=? WHERE id=?
         """
         return self.execute(sql, parameters=(status, id), commit=True)
+
+    def create_reply(self, appeal_id, user_id, text, reply_id=None, message_id=None):
+        sql = """
+        INSERT INTO Replies(id, appeal_id, user_id, text, reply_id, message_id) VALUES(?, ?, ?, ?, ?, ?)
+        """
+        id = int(time())
+        self.execute(
+            sql, parameters=(id, appeal_id, user_id, text, reply_id, message_id), commit=True
+        )
+        return id
+
+    def get_replies(self, **kwargs):
+        sql = "SELECT * FROM Replies WHERE "
+        sql, parameters = self.format_args(sql, kwargs)
+        sql += " ORDER BY created_at DESC"
+        return self.execute(sql, fetchall=True)
+
+    def get_reply(self, **kwargs):
+        sql = "SELECT * FROM Replies WHERE "
+        sql, parameters = self.format_args(sql, kwargs)
+        sql += " ORDER BY created_at DESC"
+        return self.execute(sql, parameters=parameters, fetchone=True)
+
+    def get_replies_by_user_id(self, user_id):
+        sql = """
+        SELECT * FROM Replies WHERE user_id=?
+        """
+        return self.execute(sql, parameters=(user_id,), fetchall=True)
+
+    def get_replies_by_appeal_id_and_user_id(self, appeal_id, user_id):
+        sql = """
+        SELECT * FROM Replies WHERE appeal_id=? AND user_id=? ORDER BY created_at DESC
+        """
+        return self.execute(sql, parameters=(appeal_id, user_id), fetchall=True)
 
 
 def logger(statement):

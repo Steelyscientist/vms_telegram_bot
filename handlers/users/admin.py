@@ -1,6 +1,8 @@
 import asyncio
 
 from aiogram import types
+from pprint import pprint
+import re
 
 from data.config import ADMINS
 from loader import dp, db, bot
@@ -211,3 +213,60 @@ async def bot_start(message: types.Message, state: FSMContext):
 async def get_all_users(message: types.Message):
     db.delete_users()
     await message.answer("Baza tozalandi!")
+
+
+@dp.message_handler(
+    text="/reply",
+    user_id=ADMINS,
+)
+async def get_all_users(message: types.Message):
+    user = db.select_user(id=message.from_user.id)
+    if user:
+        if user[4] == "ru":
+            await message.answer(
+                "Выберите обращение на которое хотите ответить", reply_markup=None
+            )
+        else:
+            await message.answer(
+                "Javob berish uchun murojaatni tanlang", reply_markup=None
+            )
+    await adminstate.reply.set()
+
+
+@dp.message_handler(content_types=types.ContentType.TEXT, user_id=ADMINS)
+async def reply_to_user_appeal(message: types.Message, state: FSMContext):
+    pprint(message)
+    if message.reply_to_message:
+        reply_message = message.reply_to_message.text
+        match = re.search(r"User ID: (\d+)", reply_message)
+        if match:
+            user_id = match.group(1)
+            # print(f"User ID: {user_id}")
+            appeals = db.get_appeals_by_user_id(user_id)
+            reply_id = db.create_reply(
+                appeal_id=appeals[-1][0],
+                user_id=message.from_user.id,
+                text=message.text,
+                message_id=message.message_id
+            )
+            # print(f"Reply ID: {reply_id}")
+            await bot.send_message(chat_id=user_id, text=message.text)
+            # await message.answer("Javob yuborildi / Ответ отправлен")
+            # await state.finish()
+        else:
+            await message.answer("Foydalanuvchi ID raqami topilmadi / Идентификатор пользователя не найден")
+            # await state.finish()
+    else:
+        user = db.select_user(id=message.from_user.id)
+        if user:
+            if user[4] == "ru":
+                await message.answer(
+                    "Выберите обращение на которое хотите ответить",
+                )
+            else:
+                await message.answer(
+                    "Javob berish uchun murojaatni tanlang",
+                )
+        else:
+            db.add_user(id=message.from_user.id, name=message.from_user.full_name)
+            await message.answer("Javob berish uchun murojaatni tanlang")

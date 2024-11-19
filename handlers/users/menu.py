@@ -3,6 +3,8 @@ from loader import dp, db
 from aiogram.dispatcher import FSMContext
 from keyboards.default.TypeAppUz import type_app_uz
 from keyboards.default.TypeAppRu import type_app_ru
+from keyboards.default.ApplicationPageRu import application_page_ru
+from keyboards.default.ApplicationPageUz import application_page_uz
 from states.Appstate import appstate
 from data.config import ADMINS
 from data.config import OPERATOR
@@ -12,15 +14,15 @@ from keyboards.default.AdminPanelUz import admin_uz
 @dp.message_handler(text="O'zbekcha")
 async def bot_start(message: types.Message):
     db.update_user_language(id=message.from_user.id, language="uz")
-    await message.answer("Bo'limni tanlang", reply_markup=type_app_uz)
-    await appstate.type_block.set()
+    await message.answer("Bo'limni tanlang", reply_markup=application_page_uz)
+    await appstate.type_app.set()
 
 
 @dp.message_handler(text="Русский")
 async def bot_start(message: types.Message):
     db.update_user_language(id=message.from_user.id, language="ru")
-    await message.answer("Выберите раздел", reply_markup=type_app_ru)
-    await appstate.type_block.set()
+    await message.answer("Выберите раздел", reply_markup=application_page_ru)
+    await appstate.type_app.set()
 
 
 @dp.message_handler(

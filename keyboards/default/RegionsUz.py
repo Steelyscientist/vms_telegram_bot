@@ -28,7 +28,7 @@ regions_uz = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="Toshkent viloyati"),
-            KeyboardButton(text="Toshkent shaxri")
+            KeyboardButton(text="Toshkent shahri")
         ],
         [
             KeyboardButton(text="Ortga"),

@@ -1,6 +1,6 @@
 from aiogram import types
 from loader import dp, bot, db
-from data.config import GROUP_ID
+from data.config import GROUP_ID, ADMINS
 from aiogram.dispatcher import FSMContext
 from states.Appstate import appstate
 from keyboards.default.SelectLanguage import start
@@ -56,7 +56,6 @@ async def bot_start(message: types.Message, state: FSMContext):
 
 @dp.message_handler(content_types=types.ContentType.ANY, state=appstate.app_tex_uz)
 async def bot_start(message: types.Message, state: FSMContext):
-
     if message.content_type == "text":
         if is_text_and_numbers_only(message.text):
 
@@ -71,8 +70,8 @@ async def bot_start(message: types.Message, state: FSMContext):
             data = await state.get_data()
             name = data.get("Ism")
             age = data.get("Yosh")
-            username = data.get("Nick name")
-            user_id = data.get("UserID")
+            username = data.get("Nick name") if data.get("Nick name") else message.from_user.first_name
+            user_id = data.get("UserID") if data.get("UserID") else message.from_user.id
             phone = data.get("Nomer")
             modul = data.get("Modul")
             theme = data.get("Theme")
@@ -80,39 +79,39 @@ async def bot_start(message: types.Message, state: FSMContext):
             Uztext = data.get("Matin")
 
             if app_type == "Anonim murojaat":
-                db.create_appeal(
+                appeal_id = db.create_appeal(
                     user_id=user_id,
                     text=Uztext,
                     type="Anonymous",
                     status=1,
                     theme=modul,
                 )
-                msg5 = f"<b>User ID:</b> {user_id}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Uztext}"
+                msg5 = f"<b>Appeal ID:</b> {appeal_id}\n<b>User ID:</b> {user_id}\n<b>Username:</b> {username}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
-                    reply_markup=start,
+                    reply_markup=None,
                 )
-                await bot.send_message(GROUP_ID, text=msg5)
-                await state.finish()
+                await bot.send_message(ADMINS[0], text=msg5)
+                await appstate.wait_answer.set()
             elif app_type == "Ochiq murojaat":
-                db.create_appeal(
+                appeal_id = db.create_appeal(
                     user_id=user_id, text=Uztext, type="Open", status=1, theme=theme
                 )
-                msg6 = f"<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Uztext}"
+                msg6 = f"<b>Appeal ID:</b> {appeal_id}\n<b>User ID:</b> {user_id}<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
-                    reply_markup=start,
+                    reply_markup=None,
                 )
-                await bot.send_message(GROUP_ID, text=msg6)
-                await state.finish()
+                await bot.send_message(ADMINS[0], text=msg6)
+                await appstate.wait_answer.set()
             else:
                 msg3 = f"<b>Ism:</b> {name}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
-                    reply_markup=start,
+                    reply_markup=None,
                 )
-                await bot.send_message(GROUP_ID, text=msg3)
-                await state.finish()
+                await bot.send_message(ADMINS[0], text=msg3)
+                await appstate.wait_answer.set()
 
         else:
             await message.reply(
@@ -139,8 +138,8 @@ async def bot_start(message: types.Message, state: FSMContext):
             data = await state.get_data()
             name = data.get("Ism")
             age = data.get("Yosh")
-            username = data.get("Nick name")
-            user_id = data.get("UserID")
+            username = data.get("Nick name") if data.get("Nick name") else message.from_user.first_name
+            user_id = data.get("UserID") if data.get("UserID") else message.from_user.id
             phone = data.get("Nomer")
             modul = data.get("Modul")
             theme = data.get("Theme")
@@ -148,39 +147,39 @@ async def bot_start(message: types.Message, state: FSMContext):
             Rutext = data.get("Matin")
 
             if app_type == "Анонимное обращение":
-                db.create_appeal(
+                appeal_id = db.create_appeal(
                     user_id=user_id,
                     text=Rutext,
                     type="Anonymous",
                     status=1,
                     theme=modul,
                 )
-                msg5 = f"<b>User ID:</b> {user_id}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Rutext}"
+                msg5 = f"<b>Appeal ID:</b> {appeal_id}\n<b>User ID:</b> {user_id}\n<b>Username:</b> {username}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
-                    reply_markup=start,
+                    reply_markup=None,
                 )
-                await bot.send_message(GROUP_ID, text=msg5)
-                await state.finish()
+                await bot.send_message(ADMINS[0], text=msg5)
+                await appstate.wait_answer.set()
             elif app_type == "Открытое обращение":
-                db.create_appeal(
+                appeal_id = db.create_appeal(
                     user_id=user_id, text=Rutext, type="Open", status=1, theme=theme
                 )
-                msg6 = f"<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Rutext}"
+                msg6 = f"<b>Appeal ID:</b> {appeal_id}\n<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
-                    reply_markup=start,
+                    reply_markup=None,
                 )
-                await bot.send_message(GROUP_ID, text=msg6)
-                await state.finish()
+                await bot.send_message(ADMINS[0], text=msg6)
+                await appstate.wait_answer.set()
             else:
                 msg4 = f"<b>Ism:</b> {name}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
-                    reply_markup=start,
+                    reply_markup=None,
                 )
-                await bot.send_message(GROUP_ID, text=msg4)
-                await state.finish()
+                await bot.send_message(ADMINS[0], text=msg4)
+                await appstate.wait_answer.set()
         else:
             await message.reply(
                 "Пожалуйста, отправляйте только текст. Другие виды информации не принимаются."
@@ -189,3 +188,20 @@ async def bot_start(message: types.Message, state: FSMContext):
         await message.reply(
             "Пожалуйста, отправляйте только текст. Другие виды информации не принимаются."
         )
+
+
+@dp.message_handler(content_types=types.ContentType.ANY, state=appstate.wait_answer)
+async def wait_answer(message: types.Message):
+    print(message)
+    user_id = message.from_user.id
+    msg = f"<b>User ID:</b> {user_id}\n<b>Username:</b> {message.from_user.first_name}\n{message.text}"
+    appeals = db.get_appeals_by_user_id(user_id)
+    appeal_id = appeals[-1][0]
+
+    admin_id = int(ADMINS[0])
+    replies = db.get_replies_by_appeal_id_and_user_id(user_id=admin_id, appeal_id=appeal_id)
+
+    db.create_reply(appeal_id=appeal_id, user_id=user_id, text=message.text, reply_id=replies[0][0])
+
+    await bot.send_message(ADMINS[0], text=msg, reply_to_message_id=replies[0][5])
+    await appstate.wait_answer.set()

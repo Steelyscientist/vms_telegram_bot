@@ -19,3 +19,4 @@ class appstate(StatesGroup):
     app_tex_uz = State()
     app_tex_ru = State()
     app_end = State()
+    wait_answer = State()

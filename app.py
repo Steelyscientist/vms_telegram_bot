@@ -14,6 +14,7 @@ async def on_startup(dispatcher):
     try:
         db.create_table_users()
         db.create_table_appeal()
+        db.create_table_replies()
     except Exception as err:
         print(err)
 
