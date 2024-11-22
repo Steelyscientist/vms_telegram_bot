@@ -11,7 +11,7 @@ from states.Adminstate import adminstate
 from keyboards.default.SelectLanguage import start
 from aiogram.dispatcher import FSMContext
 from keyboards.default.Canclebutton import cancle_btn
-
+from aiogram.types import ReplyKeyboardRemove
 from aiogram.dispatcher.filters.builtin import CommandStart
 
 
@@ -261,12 +261,12 @@ async def reply_to_user_appeal(message: types.Message, state: FSMContext):
         if user:
             if user[4] == "ru":
                 await message.answer(
-                    "Выберите обращение на которое хотите ответить",
+                    "Выберите обращение на которое хотите ответить", reply_markup=ReplyKeyboardRemove(),
                 )
             else:
                 await message.answer(
-                    "Javob berish uchun murojaatni tanlang",
+                    "Javob berish uchun murojaatni tanlang", reply_markup=ReplyKeyboardRemove(),
                 )
         else:
             db.add_user(id=message.from_user.id, name=message.from_user.full_name)
-            await message.answer("Javob berish uchun murojaatni tanlang")
+            await message.answer("Javob berish uchun murojaatni tanlang", reply_markup=ReplyKeyboardRemove(),)
