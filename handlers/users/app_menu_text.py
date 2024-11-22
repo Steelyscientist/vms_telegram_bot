@@ -9,6 +9,7 @@ from keyboards.default.PolUz import pol_page_uz
 from keyboards.default.TypeAppUz import type_app_uz
 from keyboards.default.TypeAppRu import type_app_ru
 from aiogram.dispatcher.filters.builtin import CommandStart
+from aiogram.types import ReplyKeyboardRemove
 
 
 @dp.message_handler(CommandStart(), state=appstate.app_tex_uz)
@@ -89,7 +90,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 msg5 = f"<b>Appeal ID:</b> {appeal_id}\n<b>User ID:</b> {user_id}\n<b>Username:</b> {username}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
-                    reply_markup=None,
+                    reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg5)
                 await appstate.wait_answer.set()
@@ -100,7 +101,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 msg6 = f"<b>Appeal ID:</b> {appeal_id}\n<b>User ID:</b> {user_id}<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
-                    reply_markup=None,
+                    reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg6)
                 await appstate.wait_answer.set()
@@ -108,7 +109,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 msg3 = f"<b>Ism:</b> {name}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
                     "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
-                    reply_markup=None,
+                    reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg3)
                 await appstate.wait_answer.set()
@@ -157,7 +158,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 msg5 = f"<b>Appeal ID:</b> {appeal_id}\n<b>User ID:</b> {user_id}\n<b>Username:</b> {username}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
-                    reply_markup=None,
+                    reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg5)
                 await appstate.wait_answer.set()
@@ -168,7 +169,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 msg6 = f"<b>Appeal ID:</b> {appeal_id}\n<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
-                    reply_markup=None,
+                    reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg6)
                 await appstate.wait_answer.set()
@@ -176,7 +177,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 msg4 = f"<b>Ism:</b> {name}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
                     "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
-                    reply_markup=None,
+                    reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg4)
                 await appstate.wait_answer.set()
@@ -192,7 +193,7 @@ async def bot_start(message: types.Message, state: FSMContext):
 
 @dp.message_handler(content_types=types.ContentType.ANY, state=appstate.wait_answer)
 async def wait_answer(message: types.Message):
-    print(message)
+    # print(message)
     user_id = message.from_user.id
     msg = f"<b>User ID:</b> {user_id}\n<b>Username:</b> {message.from_user.first_name}\n{message.text}"
     appeals = db.get_appeals_by_user_id(user_id)

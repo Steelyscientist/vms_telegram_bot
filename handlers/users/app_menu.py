@@ -12,6 +12,8 @@ from keyboards.default.PsychologistPageUz import psychologist_page_uz
 from keyboards.default.PsychologistPageRu import psychologist_page_ru
 from keyboards.default.SelectLanguage import start
 from aiogram.dispatcher.filters.builtin import CommandStart
+from aiogram.types import ReplyKeyboardRemove
+
 
 @dp.message_handler(CommandStart(), state=appstate.type_app)
 async def bot_start(message: types.Message, state: FSMContext):
@@ -37,8 +39,8 @@ async def bot_start(message: types.Message, state: FSMContext):
         }
     )
 
-    await message.answer("В каком регионе вы живете?", reply_markup=regions_ru)
-    await appstate.region_ru.set()
+    await message.answer(text="Введите текст обращения", reply_markup=ReplyKeyboardRemove())
+    await appstate.app_tex_ru.set()
 
 
 @dp.message_handler(text="Anonim murojaat", state = appstate.type_app)
@@ -50,8 +52,8 @@ async def bot_start(message: types.Message, state: FSMContext):
         }
     )
 
-    await message.answer("Qaysi hududda istiqomat qilasiz?", reply_markup=regions_uz)
-    await appstate.region_uz.set()
+    await message.answer(text="Murojaat matnini kiriting", reply_markup=ReplyKeyboardRemove())
+    await appstate.app_tex_uz.set()
 
 @dp.message_handler(text="Открытое обращение", state = appstate.type_app)
 async def bot_start(message: types.Message, state: FSMContext):
