@@ -89,7 +89,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 )
                 msg5 = f"<b>Appeal ID:</b> {appeal_id}\n<b>User ID:</b> {user_id}\n<b>Username:</b> {username}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
-                    "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting.",
+                    "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
                     reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg5)
@@ -100,7 +100,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 )
                 msg6 = f"<b>Appeal ID:</b> {appeal_id}\n<b>User ID:</b> {user_id}<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
-                    "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting.",
+                    "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
                     reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg6)
@@ -108,7 +108,7 @@ async def bot_start(message: types.Message, state: FSMContext):
             else:
                 msg3 = f"<b>Ism:</b> {name}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat:</b>\n{Uztext}"
                 await message.answer(
-                    "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting.",
+                    "Sizning murojaatingiz qabul qilindi. Tez fursatda mutaxassis javobini kuting. Zaruriyat bo'lgan taqdirda Zoom orqali maslahat olishingiz uchun havola jo'natiladi.",
                     reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg3)
@@ -157,7 +157,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 )
                 msg5 = f"<b>Appeal ID:</b> {appeal_id}\n<b>User ID:</b> {user_id}\n<b>Username:</b> {username}\n<b>Murojaat turi:</b> {app_type}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
-                    "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время.",
+                    "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
                     reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg5)
@@ -168,7 +168,7 @@ async def bot_start(message: types.Message, state: FSMContext):
                 )
                 msg6 = f"<b>Appeal ID:</b> {appeal_id}\n<b>Ism:</b> {name}\n<b>Yosh:</b> {age}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat turi:</b> {app_type}\n<b>Mavzu: </b>{theme}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
-                    "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время.",
+                    "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
                     reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg6)
@@ -176,7 +176,7 @@ async def bot_start(message: types.Message, state: FSMContext):
             else:
                 msg4 = f"<b>Ism:</b> {name}\n<b>Nick name:</b> {username}\n<b>User ID:</b> {user_id}\n<b>Telefon:</b> {phone}\n<b>Modul:</b> {modul}\n<b>Murojaat:</b>\n{Rutext}"
                 await message.answer(
-                    "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время.",
+                    "Ваше обращение принято. Ожидайте ответа специалиста в ближайшее время. В случае необходимости будет отправлена ссылка для консультации через Zoom.",
                     reply_markup=ReplyKeyboardRemove(),
                 )
                 await bot.send_message(ADMINS[0], text=msg4)
